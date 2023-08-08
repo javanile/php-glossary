@@ -62,7 +62,13 @@ $currentLanguageKeywords = $languageKeywords['default'];
 $phpFiles = array_merge(search_php_files('.'), $config['files']['include']);
 
 foreach ($phpFiles as $file) {
+    if (empty($file) || !file_exists($file)) {
+        continue;
+    }
     $code = str_replace(['\\n', '\\s'], '', php_strip_whitespace($file));
+    if (empty($code)) {
+        continue;
+    }
     preg_match_all('/\\w+/', $code, $tokens);
     foreach ($tokens[0] as $token) {
         $term = sanitize_term($token);
@@ -91,7 +97,7 @@ foreach ($phpFiles as $file) {
 }
 
 foreach ($domainTerms as $term => $info) {
-    if (empty($info['count'])) {
+    if ($term && empty($info['count'])) {
         echo "Problem was found: Domain term '{$term}' seems never used.\n";
         exit(1);
     }
