@@ -2,6 +2,9 @@
 <?php
 
 $defaultConfig = [
+    'files' => [
+        'include' => ''
+    ],
     'domain' => [
         'terms' => ''
     ],
