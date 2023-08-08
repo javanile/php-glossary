@@ -1,5 +1,29 @@
 
-
-
-
-
+[domain]
+terms = default config
+      , domain
+      , term, terms
+      , languageKeywords
+      , configFile
+      , glossaryrc
+      , config
+      , result
+      , snakeCase
+      , words
+      , filename
+      , filePath
+      , domainTerms
+      , files
+      , currentLanguageKeywords
+      , code
+      , token, tokens
+      , problem
+      , was
+      , found
+      , Unexpected
+      , on
+      , info
+      , seems
+      , never
+      , used
+      , test

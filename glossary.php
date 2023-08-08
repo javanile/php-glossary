@@ -8,19 +8,34 @@ $defaultConfig = [
 ];
 
 $languageKeywords = [
-    'default' => ['php', 'echo']
+    'default' => [
+        'php', 'echo', 'default', 'true', 'false', 'function', 'return', 'foreach', 'as', 'if', 'continue', 'elseif',
+        'exit', 'break', 'case', 'switch', 'while', 'do', 'for', 'try', 'catch', 'finally', 'throw', 'empty', 'isset',
+        'null', 'new', 'class', 'extends', 'implements', 'interface', 'use', 'namespace', 'require', 'require_once',
+    ]
 ];
 
-$command = strtolower(trim(@$argv[1]));
 $configFile = getcwd() . '/.glossaryrc';
 $config = file_exists($configFile)
-        ? parse_ini_string(preg_replace('/,\s+/m', ',', file_get_contents($configFile)), true)
+        ? parse_ini_string(preg_replace('/\s+,\s+/m', ',', file_get_contents($configFile)), true)
         : $defaultConfig;
 
-$config['domain']['terms'] = explode(',', @$config['domain']['terms']);
+$config['domain']['terms'] = array_map('sanitize_term', explode(',', @$config['domain']['terms']));
 
-function search_php_files($dir) {
+var_dump($config);
+
+function sanitize_term($term)
+{
+    $snakeCase = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $term));
+    $words = str_replace('_', ' ', $snakeCase);
+
+    return trim($words);
+}
+
+function search_php_files($dir)
+{
     $result = [];
+
     foreach (scandir($dir) as $filename) {
         if ($filename[0] === '.') continue;
         $filePath = $dir . '/' . $filename;
@@ -30,6 +45,7 @@ function search_php_files($dir) {
             $result[] = $filePath;
         }
     }
+
     return $result;
 }
 
@@ -44,17 +60,27 @@ foreach ($config['domain']['terms'] as $term) {
 $currentLanguageKeywords = $languageKeywords['default'];
 
 foreach (search_php_files('.') as $file) {
-    $code = str_replace(['\\n'], '', php_strip_whitespace($file));
+    $code = str_replace(['\\n', '\\s'], '', php_strip_whitespace($file));
     preg_match_all('/\\w+/', $code, $tokens);
     foreach ($tokens[0] as $token) {
+        $term = sanitize_term($token);
+        if (strlen($term) < 2) {
+            continue;
+        }
+        if (function_exists($token)) {
+            continue;
+        }
+        if (defined($token)) {
+            continue;
+        }
         if (in_array($token, $currentLanguageKeywords)) {
             continue;
         }
-        if (in_array($token, $config['domain']['terms'])) {
-            $domainTerms[$token]['count']++;
+        if (in_array($term, $config['domain']['terms'])) {
+            $domainTerms[$term]['count']++;
             continue;
         }
-        echo "Problem was found: Unexpected domain term '{$token}'.\n";
+        echo "Problem was found: Unexpected domain term '{$token}' on file '{$file}'.\n";
         exit(1);
     }
 }
