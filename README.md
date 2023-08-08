@@ -1,4 +1,4 @@
-# PHP Glossary
+# 📖 PHP Glossary
 
 PHP Glossary is a conceptual and demonstrative software tool designed to analyze source code 
 and identify domain-specific terms associated with business logic. 
@@ -17,10 +17,24 @@ helping developers gain insights into the crucial terms that define the project'
 
 ## Usage
 
-Clone the repository to your local machine.
-Install the necessary dependencies as outlined in the provided documentation.
-Configure the software with the desired source code directory to analyze.
-Run the tool to see the analysis results and highlighted domain terms in the source code files.
+Download the latest release of file [`bin/glossary`](https://raw.githubusercontent.com/javanile/php-glossary/main/bin/glossary) and place it in the root directory of your project. 
+
+```shell
+curl -o glossary https://raw.githubusercontent.com/javanile/php-glossary/main/bin/glossary
+```
+
+Create a file called `.glossaryrc` in the root directory of your project and add the following configuration:
+
+```ini
+[domain]
+terms = Invoice, Customer, Product, Order, Payment, Shipment, Tax, Discount
+``` 
+
+Run the tool from the command line:
+
+```shell
+php glossary
+```
 
 ## Disclaimer
 
