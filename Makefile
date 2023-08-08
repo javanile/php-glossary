@@ -1,12 +1,6 @@
 
-
-
-
-
-
 test-root:
-	@php -f glossary.php
+	@php bin/glossary
 
 test-small-app:
-	@cd tests/fixtures/small-app && php -f ../../../glossary.php
-
+	@cd tests/fixtures/small-app && php ../../../bin/glossary
