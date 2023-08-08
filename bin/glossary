@@ -12,6 +12,7 @@ $languageKeywords = [
         'php', 'echo', 'default', 'true', 'false', 'function', 'return', 'foreach', 'as', 'if', 'continue', 'elseif',
         'exit', 'break', 'case', 'switch', 'while', 'do', 'for', 'try', 'catch', 'finally', 'throw', 'empty', 'isset',
         'null', 'new', 'class', 'extends', 'implements', 'interface', 'use', 'namespace', 'require', 'require_once',
+        'include', 'include_once', 'global', 'static', 'public', 'private', 'protected', 'final', 'abstract', 'const',
     ]
 ];
 
@@ -20,9 +21,8 @@ $config = file_exists($configFile)
         ? parse_ini_string(preg_replace('/\s+,\s+/m', ',', file_get_contents($configFile)), true)
         : $defaultConfig;
 
+$config['files']['include'] = explode(',', @$config['files']['include']);
 $config['domain']['terms'] = array_map('sanitize_term', explode(',', @$config['domain']['terms']));
-
-var_dump($config);
 
 function sanitize_term($term)
 {
@@ -52,19 +52,24 @@ function search_php_files($dir)
 $domainTerms = [];
 foreach ($config['domain']['terms'] as $term) {
     $domainTerms[$term] = [
+        'term' => $term,
         'count' => 0,
         'files' => []
     ];
 }
 
 $currentLanguageKeywords = $languageKeywords['default'];
+$phpFiles = array_merge(search_php_files('.'), $config['files']['include']);
 
-foreach (search_php_files('.') as $file) {
+foreach ($phpFiles as $file) {
     $code = str_replace(['\\n', '\\s'], '', php_strip_whitespace($file));
     preg_match_all('/\\w+/', $code, $tokens);
     foreach ($tokens[0] as $token) {
         $term = sanitize_term($token);
         if (strlen($term) < 2) {
+            continue;
+        }
+        if (is_numeric($term)) {
             continue;
         }
         if (function_exists($token)) {
@@ -90,4 +95,16 @@ foreach ($domainTerms as $term => $info) {
         echo "Problem was found: Domain term '{$term}' seems never used.\n";
         exit(1);
     }
+}
+
+usort($domainTerms, function ($a, $b) {
+    return $a['count'] < $b['count'];
+});
+
+echo "| Terms                | Count |\n";
+echo "|----------------------|-------|\n";
+foreach ($domainTerms as $info) {
+    $term = str_pad($info['term'], 20, ' ', STR_PAD_RIGHT);
+    $count = str_pad($info['count'], 5, ' ', STR_PAD_RIGHT);
+    echo "| {$term} | {$count} |\n";
 }

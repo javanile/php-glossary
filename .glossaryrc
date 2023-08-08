@@ -1,4 +1,7 @@
 
+[files]
+include = bin/glossary
+
 [domain]
 terms = default config
       , domain
@@ -27,3 +30,4 @@ terms = default config
       , never
       , used
       , test
+	  , phpFiles
