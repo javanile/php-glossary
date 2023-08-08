@@ -1,1 +1,38 @@
-# php-glossary
+# PHP Glossary
+
+PHP Glossary is a conceptual and demonstrative software tool designed to analyze source code 
+and identify domain-specific terms associated with business logic. 
+This utility aims to distinguish domain terms from general programming language keywords, 
+helping developers gain insights into the crucial terms that define the project's specific functionality.
+
+## Features
+
+* Term Analysis: The tool scans source code files and identifies terms that are closely related to the project's business domain. It filters out common programming language keywords to focus solely on the terms that encapsulate the project's core concepts.
+
+* Domain Term Highlighting: The software highlights the detected domain terms within the source code, making it easier for developers to visually identify key business-related elements.
+
+* Visualization: PHP Glossary offers a simple visualization of the distribution of domain terms throughout the codebase. This visual representation can help developers gauge the prevalence and importance of different terms.
+
+* Conceptual and Demonstrative: Please note that this project is intended to demonstrate the concept of domain term analysis. It is not production-ready and should not be used as a final solution for real-world applications.
+
+## Usage
+
+Clone the repository to your local machine.
+Install the necessary dependencies as outlined in the provided documentation.
+Configure the software with the desired source code directory to analyze.
+Run the tool to see the analysis results and highlighted domain terms in the source code files.
+
+## Disclaimer
+
+This project is an educational demonstration and should not be used in a production environment. 
+It showcases the idea of identifying domain-specific terms in source code and is not optimized for real-world scenarios. 
+Use it as a starting point for understanding the potential of term analysis within software development.
+
+## Contributions
+
+Contributions to enhance and extend the capabilities of PHP Glossary are welcome. 
+If you find value in this concept and wish to contribute, please follow the guidelines provided in the repository.
+
+## License
+
+This project is open-source and released under the MIT License. Feel free to use, modify, and distribute it in accordance with the license terms.
