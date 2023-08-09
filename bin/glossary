@@ -157,7 +157,7 @@ usort($domainTerms, function ($a, $b) {
 });
 
 echo "| ".str_pad('Terms', $longTerm['length'], ' ')." | Count |\n";
-echo "| ".str_repeat('-', $longTerm['length'])." |-------|\n";
+echo "|-".str_repeat('-', $longTerm['length'])."-|:-----:|\n";
 foreach ($domainTerms as $info) {
     $term = str_pad($info['term'], $longTerm['length'], ' ');
     $count = str_pad($info['count'], 5, ' ');
