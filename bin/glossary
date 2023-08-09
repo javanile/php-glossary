@@ -104,7 +104,7 @@ foreach ($phpFiles as $file) {
                 'files' => []
             ];
         }
-        if (in_array($term, $config['domain']['terms'])) {
+        if (isset($domainTerms[$term]['term']) && $domainTerms[$term]['term']) {
             $domainTerms[$term]['count']++;
             continue;
         }
