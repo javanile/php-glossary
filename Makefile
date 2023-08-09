@@ -10,3 +10,6 @@ test-default-config:
 
 test-dump-domain-terms:
 	@cd tests/fixtures/small-app && php ../../../bin/glossary --dump-domain-terms
+
+test-dump-files:
+	@cd tests/fixtures/small-app && php ../../../bin/glossary --dump-files

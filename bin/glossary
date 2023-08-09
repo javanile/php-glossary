@@ -21,13 +21,14 @@ $languageKeywords = [
     ]
 ];
 
+$dumpFiles = in_array('--dump-files', $argv);
 $dumpDomainTerms = in_array('--dump-domain-terms', $argv);
 $configFile = getcwd() . '/.glossaryrc';
 $config = file_exists($configFile)
         ? parse_ini_string(preg_replace('/\s+,\s+/m', ',', file_get_contents($configFile)), true)
         : $defaultConfig;
 
-$config['files']['include'] = explode(',', @$config['files']['include']);
+$config['files']['include'] = array_filter(explode(',', @$config['files']['include']));
 $config['files']['exclude'] = array_map('realpath', array_filter(explode(',', @$config['files']['exclude'])));
 $config['domain']['terms'] = array_map('sanitize_term', explode(',', @$config['domain']['terms']));
 
@@ -70,6 +71,13 @@ foreach ($config['domain']['terms'] as $term) {
 
 $currentLanguageKeywords = $languageKeywords['default'];
 $phpFiles = array_merge(search_php_files('.', $config['files']['exclude']), $config['files']['include']);
+
+sort($phpFiles);
+
+if ($dumpFiles) {
+    echo implode("\n", $phpFiles) . "\n";
+    exit;
+}
 
 foreach ($phpFiles as $file) {
     if (empty($file) || !file_exists($file)) {
