@@ -28,7 +28,7 @@ $config = file_exists($configFile)
         : $defaultConfig;
 
 $config['files']['include'] = explode(',', @$config['files']['include']);
-$config['files']['exclude'] = array_filter(array_map('realpath', explode(',', @$config['files']['exclude'])));
+$config['files']['exclude'] = array_map('realpath', array_filter(explode(',', @$config['files']['exclude'])));
 $config['domain']['terms'] = array_map('sanitize_term', explode(',', @$config['domain']['terms']));
 
 function sanitize_term($term)
@@ -39,15 +39,18 @@ function sanitize_term($term)
     return trim($words);
 }
 
-function search_php_files($dir)
+function search_php_files($dir, $exclude)
 {
     $result = [];
 
     foreach (scandir($dir) as $filename) {
         if ($filename[0] === '.') continue;
         $filePath = $dir . '/' . $filename;
-        if (is_dir($filePath)) {
-            $result = array_merge($result, search_php_files($filePath));
+        $realPath = realpath($filePath);
+        if (in_array($realPath, $exclude)) {
+            continue;
+        } elseif ($realPath && is_dir($filePath)) {
+            $result = array_merge($result, search_php_files($filePath, $exclude));
         } elseif (pathinfo($filePath, PATHINFO_EXTENSION) === 'php') {
             $result[] = $filePath;
         }
@@ -66,18 +69,11 @@ foreach ($config['domain']['terms'] as $term) {
 }
 
 $currentLanguageKeywords = $languageKeywords['default'];
-$phpFiles = array_merge(search_php_files('.'), $config['files']['include']);
+$phpFiles = array_merge(search_php_files('.', $config['files']['exclude']), $config['files']['include']);
 
 foreach ($phpFiles as $file) {
     if (empty($file) || !file_exists($file)) {
         continue;
-    }
-    if (count($config['files']['exclude']) > 0) {
-        foreach ($config['files']['exclude'] as $exclude) {
-            if (strpos(realpath($file), $exclude) !== false) {
-                continue 2;
-            }
-        }
     }
     $code = str_replace(['\\n', '\\s'], '', php_strip_whitespace($file));
     if (empty($code)) {
