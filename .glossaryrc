@@ -1,6 +1,7 @@
 
 [files]
 include = bin/glossary
+exclude = tests
 
 [domain]
 terms = default config
@@ -16,6 +17,7 @@ terms = default config
       , filename
       , filePath
       , domainTerms
+      , dumpDomainTerms
       , files
       , currentLanguageKeywords
       , code
@@ -29,5 +31,7 @@ terms = default config
       , seems
       , never
       , used
-      , test
 	  , phpFiles
+	  , exclude
+	  , dump
+	  , line

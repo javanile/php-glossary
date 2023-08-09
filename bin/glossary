@@ -3,6 +3,7 @@
 
 $defaultConfig = [
     'files' => [
+        'exclude' => '',
         'include' => ''
     ],
     'domain' => [
@@ -16,15 +17,18 @@ $languageKeywords = [
         'exit', 'break', 'case', 'switch', 'while', 'do', 'for', 'try', 'catch', 'finally', 'throw', 'empty', 'isset',
         'null', 'new', 'class', 'extends', 'implements', 'interface', 'use', 'namespace', 'require', 'require_once',
         'include', 'include_once', 'global', 'static', 'public', 'private', 'protected', 'final', 'abstract', 'const',
+        'argv',
     ]
 ];
 
+$dumpDomainTerms = in_array('--dump-domain-terms', $argv);
 $configFile = getcwd() . '/.glossaryrc';
 $config = file_exists($configFile)
         ? parse_ini_string(preg_replace('/\s+,\s+/m', ',', file_get_contents($configFile)), true)
         : $defaultConfig;
 
 $config['files']['include'] = explode(',', @$config['files']['include']);
+$config['files']['exclude'] = array_filter(array_map('realpath', explode(',', @$config['files']['exclude'])));
 $config['domain']['terms'] = array_map('sanitize_term', explode(',', @$config['domain']['terms']));
 
 function sanitize_term($term)
@@ -68,6 +72,13 @@ foreach ($phpFiles as $file) {
     if (empty($file) || !file_exists($file)) {
         continue;
     }
+    if (count($config['files']['exclude']) > 0) {
+        foreach ($config['files']['exclude'] as $exclude) {
+            if (strpos(realpath($file), $exclude) !== false) {
+                continue 2;
+            }
+        }
+    }
     $code = str_replace(['\\n', '\\s'], '', php_strip_whitespace($file));
     if (empty($code)) {
         continue;
@@ -90,6 +101,13 @@ foreach ($phpFiles as $file) {
         if (in_array($token, $currentLanguageKeywords)) {
             continue;
         }
+        if ($dumpDomainTerms && empty($domainTerms[$term])) {
+            $domainTerms[$term] = [
+                'term' => $term,
+                'count' => 0,
+                'files' => []
+            ];
+        }
         if (in_array($term, $config['domain']['terms'])) {
             $domainTerms[$term]['count']++;
             continue;
@@ -97,6 +115,22 @@ foreach ($phpFiles as $file) {
         echo "Problem was found: Unexpected domain term '{$token}' on file '{$file}'.\n";
         exit(1);
     }
+}
+
+if ($dumpDomainTerms) {
+    usort($domainTerms, function ($a, $b) {
+        return strcmp(strtolower($a['term']), strtolower($b['term']));
+    });
+    echo "[domain]\n";
+    $line = 'terms =';
+    foreach ($domainTerms as $info) {
+        if (empty($info['term'])) {
+            continue;
+        }
+        echo "$line {$info['term']}\n";
+        $line = '      ,';
+    }
+    exit(0);
 }
 
 foreach ($domainTerms as $term => $info) {
