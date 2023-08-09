@@ -17,7 +17,7 @@ $languageKeywords = [
         'exit', 'break', 'case', 'switch', 'while', 'do', 'for', 'try', 'catch', 'finally', 'throw', 'empty', 'isset',
         'null', 'new', 'class', 'extends', 'implements', 'interface', 'use', 'namespace', 'require', 'require_once',
         'include', 'include_once', 'global', 'static', 'public', 'private', 'protected', 'final', 'abstract', 'const',
-        'argv',
+        'argv', 'this', 'self', 'parent', 'static',
     ]
 ];
 
