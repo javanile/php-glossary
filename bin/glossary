@@ -137,10 +137,18 @@ if ($dumpDomainTerms) {
     exit(0);
 }
 
+$longTerm = [
+    'term' => '',
+    'length' => 0,
+];
 foreach ($domainTerms as $term => $info) {
     if ($term && empty($info['count'])) {
         echo "Problem was found: Domain term '{$term}' seems never used.\n";
         exit(1);
+    }
+    if (strlen($term) > $longTerm['length']) {
+        $longTerm['term'] = $term;
+        $longTerm['length'] = strlen($term);
     }
 }
 
@@ -148,10 +156,10 @@ usort($domainTerms, function ($a, $b) {
     return $a['count'] < $b['count'];
 });
 
-echo "| Terms                | Count |\n";
-echo "|----------------------|-------|\n";
+echo "| ".str_pad('Terms', $longTerm['length'], ' ')." | Count |\n";
+echo "| ".str_repeat('-', $longTerm['length'])." |-------|\n";
 foreach ($domainTerms as $info) {
-    $term = str_pad($info['term'], 20, ' ', STR_PAD_RIGHT);
-    $count = str_pad($info['count'], 5, ' ', STR_PAD_RIGHT);
+    $term = str_pad($info['term'], $longTerm['length'], ' ');
+    $count = str_pad($info['count'], 5, ' ');
     echo "| {$term} | {$count} |\n";
 }

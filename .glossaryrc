@@ -17,6 +17,7 @@ terms = default config
       , filename
       , filePath
       , domainTerms
+      , dumpFiles
       , dumpDomainTerms
       , files
       , currentLanguageKeywords
@@ -35,3 +36,5 @@ terms = default config
 	  , exclude
 	  , dump
 	  , line
+	  , longTerm
+	  , length
