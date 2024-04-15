@@ -1,4 +1,9 @@
 
+release:
+	@git add .
+	@git commit -am "New release!"
+	@git push
+
 test-root:
 	@php bin/glossary
 
