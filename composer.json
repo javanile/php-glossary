@@ -1,5 +1,6 @@
 {
   "name": "javanile/php-glossary",
+  "description": "Demonstrative Conceptual Implementation: Glossary Code Analysis Tool for PHP",
   "license": "MIT",
   "bin": ["bin/glossary"]
 }
