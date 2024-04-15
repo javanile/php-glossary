@@ -1,3 +1,5 @@
 {
-  "name": "javanile/php-glossary"
+  "name": "javanile/php-glossary",
+  "license": "MIT",
+  "bin": ["bin/glossary"]
 }
