@@ -98,6 +98,11 @@ foreach ($config['domain']['terms'] as $term) {
 $currentLanguageKeywords = $languageKeywords['default'];
 $phpFiles = array_merge(search_php_files('.', $config['files']['exclude']), $config['files']['include']);
 
+if (empty($phpFiles)) {
+    echo "Problem was found: No PHP files found.\n";
+    exit(1);
+}
+
 sort($phpFiles);
 
 if ($dumpFiles) {
