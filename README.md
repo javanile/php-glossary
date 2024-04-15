@@ -55,7 +55,7 @@ php vendor/bin/glossary
 * The `.glossaryrc` file should serve as the central repository for domain-specific terms within the application. We envision tools that will keep this file updated by aggregating input from various sources, such as business logic analysis tools, etc.
 * Developers should be educated and encouraged to select terms during development that are present in the `.glossaryrc` file.
 * The official glossary and its representing file, the `.glossaryrc`, are integral parts of the project, much like tests and fixtures.
-* If a developer modifies the glossary to pass CI/CD, they must justify it during the peer-review phase. This introduces the opportunity to have targeted checks solely on glossary files rather than throughout the entire codebase.
+* If a developer modifies the `.glossaryrc` file to pass CI/CD, they must justify it during the peer-review phase. This introduces the opportunity to have targeted checks solely on glossary files rather than throughout the entire codebase.
 
 ## ⚠️ Disclaimer
 
