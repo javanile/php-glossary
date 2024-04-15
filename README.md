@@ -57,7 +57,7 @@ php vendor/bin/glossary
 * The official glossary and its representing file, the `.glossaryrc`, are integral parts of the project, much like tests and fixtures.
 * If a developer modifies the `.glossaryrc` file to pass CI/CD, they must justify it during the peer-review phase. This introduces the opportunity to have targeted checks solely on glossary files rather than throughout the entire codebase.
 
-## ⚠️ Disclaimer
+## ⚠️ Disclaimer ⚠️
 
 > This project is an educational demonstration and should not be used in a production environment. 
 > It showcases the idea of identifying domain-specific terms in source code and is not optimized for real-world scenarios. 

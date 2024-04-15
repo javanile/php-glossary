@@ -55,7 +55,7 @@ $config = file_exists($configFile)
         : $defaultConfig;
 
 $config['files']['include'] = array_filter(explode(',', @$config['files']['include']));
-$config['files']['exclude'] = array_map('realpath', array_filter(explode(',', @$config['files']['exclude'])));
+$config['files']['exclude'] = array_map('realpath', array_filter(explode(',', 'vendor,'.@$config['files']['exclude'])));
 $config['domain']['terms'] = array_map('sanitize_term', explode(',', @$config['domain']['terms']));
 
 function sanitize_term($term)
