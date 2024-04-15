@@ -15,13 +15,27 @@ helping developers gain insights into the crucial terms that define the project'
 
 * Conceptual and Demonstrative: Please note that this project is intended to demonstrate the concept of domain term analysis. It is not production-ready and should not be used as a final solution for real-world applications.
 
-## Usage
+## Installation
+
+### Composer
+
+To install this project as a dev dependency in your existing PHP project, you can use Composer's require command with the --dev flag:
+
+```shell
+composer require --dev javanile/php-glossary
+```
+
+This command will add the javanile/php-glossary package as a dev dependency to your project's `composer.json` file and install it along with its dev dependencies.
+
+### Standalone
 
 Download the latest release of file [`bin/glossary`](https://raw.githubusercontent.com/javanile/php-glossary/main/bin/glossary) and place it in the root directory of your project. 
 
 ```shell
 curl -o glossary https://raw.githubusercontent.com/javanile/php-glossary/main/bin/glossary
 ```
+
+## Usage
 
 Create a file called `.glossaryrc` in the root directory of your project and add the following configuration:
 
@@ -33,7 +47,7 @@ terms = Invoice, Customer, Product, Order, Payment, Shipment, Tax, Discount
 Run the tool from the command line:
 
 ```shell
-php glossary
+php vendor/bin/glossary
 ```
 
 ## Disclaimer
